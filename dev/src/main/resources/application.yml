@@ -1,0 +1,16 @@
+app-settings:
+  name: dev
+  api:
+    key: c975f920eca443a9b66d8ad027e006c1
+    host: https://api.sl.se/api2/linedata.json?key=${app-settings.api.key}
+    line: ${app-settings.api.host}&model=line&DefaultTransportModeCode=BUS
+    journeyPatterns: ${app-settings.api.host}&model=jour&DefaultTransportModeCode=BUS
+    stopPoints: ${app-settings.api.host}&model=stop
+    webclientDataBufferLimit: 100MB
+    timeOutMs: 300000
+
+
+logging:
+  level:
+    root: info
+    '[org.springframework.boot]': info
