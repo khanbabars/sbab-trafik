@@ -1,30 +1,27 @@
 package com.sbab.dev.rest;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sbab.dev.domain.ApiPort;
+
 import com.sbab.dev.domain.ApiService;
 import com.sbab.dev.domain.dto.JourneyPattern;
 import com.sbab.dev.domain.dto.Line;
 import com.sbab.dev.domain.dto.StopPoint;
-import com.sbab.dev.integration.ApiAdapter;
+import com.sbab.dev.domain.model.JourneyPatternModel;
+import com.sbab.dev.domain.model.LinesModel;
+import com.sbab.dev.domain.model.StopPointsModel;
+import com.sbab.dev.integration.ApiUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "api", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api", produces = APPLICATION_JSON_VALUE)
 public class Controller {
 
 
@@ -32,20 +29,21 @@ public class Controller {
     private ApiService apiService;
 
 
+    @Autowired
+    ApiUtils apiUtils;
 
-    @GetMapping(value = "/v2", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Line.Result> findLinesWithMostStops() {
-
+    @GetMapping(value = "/toplines", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<LinesModel> findLinesWithMostStops() {
         return apiService.FindTopLines(10);
-
     }
 
 
-    @GetMapping(value = "/v4/{linesNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<StopPoint.Result> findStopPoints(@RequestParam("linesNumber")String linesNumber) {
-
+    @GetMapping(value = "/stopsbyname/{linesNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<JourneyPatternModel> findStopPoints(@RequestParam("linesNumber")String linesNumber) {
         return apiService.findStopsForTopLines(linesNumber);
 
     }
+
 
 }

@@ -4,6 +4,7 @@ import com.sbab.dev.domain.ApiPort;
 import com.sbab.dev.domain.dto.JourneyPattern;
 import com.sbab.dev.domain.dto.Line;
 import com.sbab.dev.domain.dto.StopPoint;
+import com.sbab.dev.repository.ApiRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,19 +21,18 @@ public class ApiUtils {
 
     private final ApiPort apiPort;
 
+    private  final ApiRepository apiRepository;
+
 
     @PostConstruct
-    @Cacheable("JourneyPattern")
     public List<JourneyPattern.Result> getJourneyPattern() {
-
-        JourneyPattern journeyPattern = null;
-
-        try {
-            journeyPattern = apiPort.getJourneyPattern();
+      try {
+            JourneyPattern   journeyPattern = apiPort.getJourneyPattern();
             log.debug("Received line from journey patterns data from the traffic api");
 
             if (!journeyPattern.getResponseData().getResult().isEmpty()) {
                 List<JourneyPattern.Result> journeyPatterns = journeyPattern.getResponseData().getResult();
+                journeyPatterns.stream().forEach(item -> apiRepository.insertJourneyPattern(item.getLineNumber(), item.getJourneyPatternPointNumber()));
                 return journeyPatterns;
             }
         } catch (WebClientResponseException ex) {
@@ -46,22 +46,16 @@ public class ApiUtils {
     }
 
 
-
-
     @PostConstruct
-    @Cacheable("StopPoints")
     public List<StopPoint.Result> getStopPoints() {
-
-        StopPoint stopPoint = null;
-
         try {
-            stopPoint = apiPort.getStopPoints();
+            StopPoint   stopPoint = apiPort.getStopPoints();
 
             log.debug("Received line from stop point data from the traffic api");
 
             if (!stopPoint.getResponseData().getResult().isEmpty()) {
                 List<StopPoint.Result> stopPoints = stopPoint.getResponseData().getResult();
-
+                stopPoints.stream().forEach(item -> apiRepository.insertStopPoints(item.getStopPointNumber(), item.getStopPointName()));
                 return stopPoints;
             }
         } catch (WebClientResponseException ex) {
@@ -74,21 +68,14 @@ public class ApiUtils {
         return null;
     }
 
-
-
-
-
     @PostConstruct
-    @Cacheable("getLines")
     public List<Line.Result> getLines() {
-
-        Line line = null;
-
         try {
-            line = apiPort.getLines();
+            Line line = apiPort.getLines();
             log.debug("Received line from line data from traffic api");
             if (!line.getResponseData().getResult().isEmpty()) {
                 List<Line.Result> lines = line.getResponseData().getResult();
+                lines.stream().forEach(item -> apiRepository.insertLines(item.getLineNumber(), item.getDefaultTransportModeCode()));
                 return lines;
             }
         } catch (WebClientResponseException ex) {

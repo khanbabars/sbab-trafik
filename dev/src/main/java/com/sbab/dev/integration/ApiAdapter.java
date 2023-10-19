@@ -1,42 +1,52 @@
 package com.sbab.dev.integration;
 
 
+
 import com.sbab.dev.config.AppSettings;
 import com.sbab.dev.domain.ApiPort;
 import com.sbab.dev.domain.dto.JourneyPattern;
 import com.sbab.dev.domain.dto.Line;
 import com.sbab.dev.domain.dto.StopPoint;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import java.net.http.HttpClient;
-import java.util.List;
-import java.util.Map;
+import reactor.netty.http.client.HttpClient;
+
+import java.time.Duration;
+
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class ApiAdapter implements ApiPort {
+
 
 
     private final AppSettings appSettings;
 
-    @Autowired
+
     private WebClient webClient;
 
-    @Autowired
-    private RestTemplate appRestClient;
+    public ApiAdapter(AppSettings appSettings) {
+        this.appSettings = appSettings;
+
+        log.info("Webclient buffer size {} MB", appSettings.api().webclientDataBufferLimit().toMegabytes());
+
+        HttpClient httpClient = HttpClient.create()
+                .responseTimeout(Duration.ofMillis(appSettings.api().timeOutMs()));
+
+        final ExchangeStrategies strategies = ExchangeStrategies.builder().codecs(codecs -> codecs.defaultCodecs()
+                .maxInMemorySize((int) appSettings.api().webclientDataBufferLimit().toBytes())).build();
+
+        webClient = WebClient.builder()
+                .exchangeStrategies(strategies)
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .build();
+    }
+
 
 
     @Override
@@ -44,7 +54,6 @@ public class ApiAdapter implements ApiPort {
 
         log.info("Running method");
     }
-
 
 
 
@@ -65,7 +74,7 @@ public class ApiAdapter implements ApiPort {
                 .bodyToMono(new ParameterizedTypeReference<JourneyPattern>() {
                 })
                 .block();
-        log.info(journeyPattern.getResponseData().getResult().get(0).getJourneyPatternPointNumber());
+
 
         return journeyPattern;
 
@@ -76,7 +85,7 @@ public class ApiAdapter implements ApiPort {
         String urlLines = appSettings.api().line();
 
         log.debug("Fetching results for the lines model ..");
-     
+
         Line lines = webClient.get()
                 .uri(urlLines)
                 .header("accept-encoding", "gzip")
@@ -108,31 +117,9 @@ public class ApiAdapter implements ApiPort {
 
     }
 
-
-
-
-    @Override
-    public ResponseEntity<List<Line.Result>> getLineHttp() {
-        log.info("Contacting trafiklab api for 'line' models..");
-
-        ResponseEntity<List<Line.Result>> lineResponse =
-                appRestClient.exchange("https://api.sl.se/api2/LineData.json?key=c975f920eca443a9b66d8ad027e006c1&model=line&DefaultTransportModeCode=BUS",
-                        HttpMethod.GET,
-                        requestEntityWithCompressionHeaders(),
-                        new ParameterizedTypeReference<>() {
-                                });
-
-        return lineResponse;
     }
 
 
-    private HttpEntity<?> requestEntityWithCompressionHeaders() {
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
-        return new HttpEntity<>(requestHeaders);
-    }
 
-
-}
 
 
