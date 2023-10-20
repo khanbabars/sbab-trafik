@@ -63,8 +63,6 @@ public class ApiAdapter implements ApiPort {
 
         String urlJourneyPattern = appSettings.api().journeyPatterns();
 
-        log.info(urlJourneyPattern);
-
         log.info("Fetching results for the journey pattern model ..");
 
         JourneyPattern journeyPattern = webClient.get()
@@ -84,7 +82,7 @@ public class ApiAdapter implements ApiPort {
 
         String urlLines = appSettings.api().line();
 
-        log.debug("Fetching results for the lines model ..");
+        log.info("Fetching results for the lines model ..");
 
         Line lines = webClient.get()
                 .uri(urlLines)
@@ -103,7 +101,7 @@ public class ApiAdapter implements ApiPort {
 
         String urlStopPoints = appSettings.api().stopPoints();
 
-        log.debug("Fetching results for the stopPoints model ..");
+        log.info("Fetching results for the stopPoints model ..");
 
         StopPoint stopPoints = webClient.get()
                 .uri(urlStopPoints)

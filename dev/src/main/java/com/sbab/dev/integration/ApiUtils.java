@@ -8,7 +8,6 @@ import com.sbab.dev.repository.ApiRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
@@ -72,7 +71,9 @@ public class ApiUtils {
     public List<Line.Result> getLines() {
         try {
             Line line = apiPort.getLines();
+
             log.debug("Received line from line data from traffic api");
+
             if (!line.getResponseData().getResult().isEmpty()) {
                 List<Line.Result> lines = line.getResponseData().getResult();
                 lines.stream().forEach(item -> apiRepository.insertLines(item.getLineNumber(), item.getDefaultTransportModeCode()));

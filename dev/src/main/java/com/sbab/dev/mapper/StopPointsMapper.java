@@ -12,7 +12,7 @@ public class StopPointsMapper implements RowMapper<StopPointsModel> {
     @Override
     public StopPointsModel mapRow(ResultSet rs, int rowNum) throws SQLException {
         StopPointsModel rows = new StopPointsModel();
-        rows.setStopPoints(rs.getString("stop_point"));
+        rows.setStopPoint(rs.getString("stop_point"));
         rows.setStopName(rs.getString("stop_name"));
         return rows;
 

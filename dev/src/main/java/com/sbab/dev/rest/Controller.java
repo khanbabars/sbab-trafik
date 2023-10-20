@@ -1,12 +1,6 @@
 package com.sbab.dev.rest;
 
-
-
 import com.sbab.dev.domain.ApiService;
-import com.sbab.dev.domain.dto.JourneyPattern;
-import com.sbab.dev.domain.dto.Line;
-import com.sbab.dev.domain.dto.StopPoint;
-import com.sbab.dev.domain.model.JourneyPatternModel;
 import com.sbab.dev.domain.model.LinesModel;
 import com.sbab.dev.domain.model.StopPointsModel;
 import com.sbab.dev.integration.ApiUtils;
@@ -32,16 +26,16 @@ public class Controller {
     @Autowired
     ApiUtils apiUtils;
 
-    @GetMapping(value = "/toplines", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/toplines", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<LinesModel> findLinesWithMostStops() {
         return apiService.FindTopLines(10);
     }
 
 
-    @GetMapping(value = "/stopsbyname/{linesNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/stopsbyname/{lineNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<JourneyPatternModel> findStopPoints(@RequestParam("linesNumber")String linesNumber) {
-        return apiService.findStopsForTopLines(linesNumber);
+    public List<StopPointsModel> findStopPoints(@PathVariable ("lineNumber")String lineNumber) {
+        return apiService.findStopsForTopLines(lineNumber);
 
     }
 

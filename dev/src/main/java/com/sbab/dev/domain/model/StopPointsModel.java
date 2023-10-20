@@ -7,7 +7,7 @@ import lombok.Data;
 public class StopPointsModel {
 
     private Integer id;
-    private String stopPoints;
+    private String stopPoint;
     private String stopName;
 
 }
