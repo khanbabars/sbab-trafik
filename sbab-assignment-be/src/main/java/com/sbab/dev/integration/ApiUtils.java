@@ -5,7 +5,7 @@ import com.sbab.dev.domain.dto.JourneyPattern;
 import com.sbab.dev.domain.dto.Line;
 import com.sbab.dev.domain.dto.StopPoint;
 import com.sbab.dev.repository.ApiRepository;
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ public class ApiUtils {
 
     @PostConstruct
     public List<JourneyPattern.Result> getJourneyPattern() {
-      try {
+        try {
             JourneyPattern   journeyPattern = apiPort.getJourneyPattern();
             log.debug("Received line from journey patterns data from the traffic api");
 

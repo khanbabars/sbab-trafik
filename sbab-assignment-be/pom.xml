@@ -5,8 +5,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.7.10</version>
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sbab</groupId>
 	<artifactId>sbab-assignment-be</artifactId>

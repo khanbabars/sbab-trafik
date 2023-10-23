@@ -1,7 +1,7 @@
 app-settings:
   name: dev
   api:
-    key: bf16563b8b814066b3b4e7b6a0b35e4a
+    key: 008c5981dcb74b96935417337d6188f6
     host: https://api.sl.se/api2/linedata.json?key=${app-settings.api.key}
     line: ${app-settings.api.host}&model=line&DefaultTransportModeCode=BUS
     journeyPatterns: ${app-settings.api.host}&model=jour&DefaultTransportModeCode=BUS

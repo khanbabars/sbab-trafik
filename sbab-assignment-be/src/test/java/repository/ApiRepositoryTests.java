@@ -30,8 +30,6 @@ public class ApiRepositoryTests {
     @Autowired
     private ApiRepository apiRepository;
 
-
-
     @Test
     void findLineByIdTest() throws InterruptedException {
         LinesModel result = apiRepository.findLineById("636");
