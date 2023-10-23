@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sbab</groupId>
-	<artifactId>dev</artifactId>
+	<artifactId>sbab-assignment-be</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>dev</name>
 	<description>Demo project for Spring Boot</description>

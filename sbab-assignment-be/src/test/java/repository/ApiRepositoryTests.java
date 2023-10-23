@@ -2,6 +2,7 @@ package repository;
 
 
 
+import com.sbab.dev.DevApplication;
 import com.sbab.dev.domain.model.JourneyPatternModel;
 import com.sbab.dev.domain.model.LinesModel;
 import com.sbab.dev.domain.model.StopPointsModel;
@@ -17,7 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-@SpringBootTest
+@SpringBootTest(classes = DevApplication.class)
 @Disabled
 @ActiveProfiles("test")
 @Sql({"classpath:repo/data.sql"})

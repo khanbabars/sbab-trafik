@@ -28,21 +28,6 @@ public class Config {
 
 
 
-
-/*
-    @Bean
-    public WebClient webClient() {
-        final int size = 500 * 1024 * 1024;
-        final ExchangeStrategies strategies = ExchangeStrategies.builder()
-                .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
-                .build();
-        return WebClient.builder()
-                .exchangeStrategies(strategies)
-                .build();
-    }
-
-*/
-
 }
 
 
