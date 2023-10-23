@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -29,9 +27,12 @@ public class Config {
     }
 
 
+
+
+/*
     @Bean
     public WebClient webClient() {
-        final int size = 100 * 1024 * 1024;
+        final int size = 500 * 1024 * 1024;
         final ExchangeStrategies strategies = ExchangeStrategies.builder()
                 .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
                 .build();
@@ -40,8 +41,7 @@ public class Config {
                 .build();
     }
 
-
-
+*/
 
 }
 
